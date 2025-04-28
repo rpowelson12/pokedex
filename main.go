@@ -1,5 +1,10 @@
-package main 
+package main
 
-func main(){
-	println("Hello World!")
+import (
+	"fmt"
+)
+
+func main() {
+	fmt.Println("Hello, World!")
+
 }
