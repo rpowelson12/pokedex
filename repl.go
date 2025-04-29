@@ -3,12 +3,12 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"github.com/rpowelson12/pokedex/internal/pokeapi"
 	"os"
 	"strings"
 )
 
-func startRepl() {
-	pokeAPI := &PokeApi{}
+func startRepl(cfg *config) {
 	reader := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Print("Pokedex > ")
@@ -23,7 +23,7 @@ func startRepl() {
 
 		command, exists := getCommands()[commandName]
 		if exists {
-			err := command.callback(pokeAPI)
+			err := command.callback(cfg)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -44,7 +44,13 @@ func cleanInput(text string) []string {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*PokeApi) error
+	callback    func(*config) error
+}
+
+type config struct {
+	pokeapiClient        pokeapi.Client
+	nextLocationsURL     *string
+	previousLocationsURL *string
 }
 
 func getCommands() map[string]cliCommand {
@@ -62,7 +68,7 @@ func getCommands() map[string]cliCommand {
 		"map": {
 			name:        "map",
 			description: "Displays the next 20 locations",
-			callback:    commandMap,
+			callback:    commandMapf,
 		},
 		"mapb": {
 			name:        "mapb",
