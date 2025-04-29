@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func commandHelp(page *Page) error {
+func commandHelp(pokeAPI *PokeApi) error {
 	fmt.Println()
 	fmt.Println("Welcome to the Pokedex!")
 	fmt.Println("Usage: ")

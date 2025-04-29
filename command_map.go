@@ -1,34 +1,31 @@
 package main
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
-	"net/http"
 )
 
-type Page struct {
-	Next     string
-	Previous string
-}
-
-func commandMap(page *Page) error {
-	url := "https://pokeapi.co/api/v2/location-area/"
-	request, err := http.Get(url)
-	if err != nil {
-		return errors.New("Unable to access PokeApi")
+func commandMap(pokeAPI *PokeApi) error {
+	if len(pokeAPI.Next) == 0 {
+		result, err := FetchLocationAreas("https://pokeapi.co/api/v2/location-area/")
+		if err != nil {
+			return errors.New("Error fetching locations")
+		}
+		pokeAPI.Next = result.Next
+		pokeAPI.Previous = result.Previous
+		for _, location := range result.Results {
+			fmt.Println(location.Name)
+		}
+	} else {
+		result, err := FetchLocationAreas(pokeAPI.Next)
+		if err != nil {
+			return errors.New("Error fetching locations")
+		}
+		pokeAPI.Next = result.Next
+		pokeAPI.Previous = result.Previous
+		for _, location := range result.Results {
+			fmt.Println(location.Name)
+		}
 	}
-	body, err := io.ReadAll(request.Body)
-	defer request.Body.Close()
-	if err != nil {
-		return errors.New("Error reading body")
-	}
-	// Have the JSON for the location areas now
-	failed := json.Unmarshal(body, &page)
-	if failed != nil {
-		return errors.New("Error assigning JSON to struct")
-	}
-	fmt.Printf(page.Next)
 	return nil
 }
