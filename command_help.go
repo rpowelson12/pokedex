@@ -1,10 +1,10 @@
-package main 
+package main
 
 import (
 	"fmt"
 )
 
-func commandHelp() error{
+func commandHelp(page *Page) error {
 	fmt.Println()
 	fmt.Println("Welcome to the Pokedex!")
 	fmt.Println("Usage: ")
@@ -14,6 +14,6 @@ func commandHelp() error{
 		fmt.Printf("%s: %s\n", cmd.name, cmd.description)
 	}
 
-	fmt.Println()	
+	fmt.Println()
 	return nil
 }

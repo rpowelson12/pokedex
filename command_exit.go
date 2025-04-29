@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"os"
 )
-func commandExit() error {
+
+func commandExit(page *Page) error {
 	fmt.Println("Closing the Pokedex... Goodbye!")
 	os.Exit(0)
 	return nil

@@ -1,13 +1,19 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
 	"net/http"
 )
 
-func commandMap() error {
+type Page struct {
+	Next     string
+	Previous string
+}
+
+func commandMap(page *Page) error {
 	url := "https://pokeapi.co/api/v2/location-area/"
 	request, err := http.Get(url)
 	if err != nil {
@@ -18,8 +24,11 @@ func commandMap() error {
 	if err != nil {
 		return errors.New("Error reading body")
 	}
-
-	fmt.Printf("%s", &body)
-
+	// Have the JSON for the location areas now
+	failed := json.Unmarshal(body, &page)
+	if failed != nil {
+		return errors.New("Error assigning JSON to struct")
+	}
+	fmt.Printf(page.Next)
 	return nil
 }
