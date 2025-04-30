@@ -3,9 +3,10 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"github.com/rpowelson12/pokedex/internal/pokeapi"
 	"os"
 	"strings"
+
+	"github.com/rpowelson12/pokedex/internal/pokeapi"
 )
 
 func startRepl(cfg *config) {
@@ -93,6 +94,11 @@ func getCommands() map[string]cliCommand {
 			name:        "inspect",
 			description: "Inspect your pokemon",
 			callback:    commandInspect,
+		},
+		"pokedex": {
+			name:        "pokedex",
+			description: "View your pokemon",
+			callback:    commandPokedex,
 		},
 	}
 }
